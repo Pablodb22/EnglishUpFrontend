@@ -1,64 +1,64 @@
 export default function Vocabulary() {
   const categories = [
-    { 
-      title: 'Comida y Bebida', 
-      icon: 'bi-cup-hot', 
+    {
+      title: 'Comida y Bebida',
+      icon: 'bi-cup-hot',
       desc: 'Vocabulario para restaurantes, cocina y alimentos.',
       words: 180,
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
     },
-    { 
-      title: 'Viajes y Turismo', 
-      icon: 'bi-airplane', 
+    {
+      title: 'Viajes y Turismo',
+      icon: 'bi-airplane',
       desc: 'Palabras esenciales para aeropuertos y destinos.',
       words: 220,
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
     },
-    { 
-      title: 'Trabajo y Oficina', 
-      icon: 'bi-briefcase', 
+    {
+      title: 'Trabajo y Oficina',
+      icon: 'bi-briefcase',
       desc: 'Términos profesionales y vocabulario corporativo.',
       words: 195,
       gradient: 'linear-gradient(135deg, #6a76ac 0%, #764ba2 100%)'
     },
-    { 
-      title: 'Salud y Bienestar', 
-      icon: 'bi-heart-pulse', 
+    {
+      title: 'Salud y Bienestar',
+      icon: 'bi-heart-pulse',
       desc: 'Vocabulario médico y de actividad física.',
       words: 165,
       gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
     },
-    { 
-      title: 'Tecnología', 
-      icon: 'bi-laptop', 
+    {
+      title: 'Tecnología',
+      icon: 'bi-laptop',
       desc: 'Términos de computación, internet y gadgets.',
       words: 210,
       gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
     },
-    { 
-      title: 'Hogar y Familia', 
-      icon: 'bi-house-heart', 
+    {
+      title: 'Hogar y Familia',
+      icon: 'bi-house-heart',
       desc: 'Vocabulario doméstico y relaciones familiares.',
       words: 175,
       gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
     },
-    { 
-      title: 'Deportes', 
-      icon: 'bi-trophy', 
+    {
+      title: 'Deportes',
+      icon: 'bi-trophy',
       desc: 'Términos deportivos y actividades físicas.',
       words: 140,
       gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
     },
-    { 
-      title: 'Educación', 
-      icon: 'bi-mortarboard', 
+    {
+      title: 'Educación',
+      icon: 'bi-mortarboard',
       desc: 'Vocabulario académico y escolar.',
       words: 190,
       gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
     },
-    { 
-      title: 'Naturaleza', 
-      icon: 'bi-tree', 
+    {
+      title: 'Naturaleza',
+      icon: 'bi-tree',
       desc: 'Animales, plantas y medio ambiente.',
       words: 160,
       gradient: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)'
@@ -146,70 +146,71 @@ export default function Vocabulary() {
         </div>
       </section>
 
-    {/* Word of the Day */}
-<section id="word-of-day" className="py-5 bg-white">
-  <div className="container">
-    <div className="card border-0 shadow-lg rounded-4 overflow-hidden position-relative animate-in">
-      <div className="row g-0 align-items-center">
-        
-        {/* Panel izquierdo con degradado azul original */}
-        <div 
-          className="col-lg-4 d-flex flex-column justify-content-center align-items-center text-white text-center p-5" 
-          style={{ background: 'linear-gradient(135deg, #6a76ac 0%, #764ba2 100%)' }}
-        >
-          <i className="bi bi-star-fill fs-1 mb-3 d-block"></i>
-          <h3 className="fw-bold mb-2">Palabra del Día</h3>
-          <p className="opacity-75 small mb-0">Aprende una nueva palabra cada día</p>
-        </div>
+      {/* Word of the Day */}
+      <section id="word-of-day" className="py-5 bg-white">
+        <div className="container">
+          <div className="card border-0 shadow-lg rounded-4 overflow-hidden position-relative animate-in">
+            <div className="row g-0 align-items-center">
 
-        {/* Contenido principal */}
-        <div className="col-lg-8 bg-white p-5 position-relative">
-          <div className="d-flex flex-wrap justify-content-between align-items-start mb-4">
-            <div>
-              <h1 className="fw-bold mb-1">Resilient</h1>
-              <p className="text-muted mb-1">/rɪˈzɪl.i.ənt/</p>
-              <span className="badge bg-primary">Adjetivo</span>
+              {/* Panel izquierdo con degradado azul original */}
+              <div
+                className="col-lg-4 d-flex flex-column justify-content-center align-items-center text-white text-center p-5 rounded-4"
+                style={{ background: 'linear-gradient(135deg, #6a76ac 0%, #764ba2 100%)' }}
+              >
+                <i className="bi bi-star-fill fs-1 mb-3 d-block"></i>
+                <h3 className="fw-bold mb-2">Palabra del Día</h3>
+                <p className="opacity-75 small mb-0">Aprende una nueva palabra cada día</p>
+              </div>
+
+
+              {/* Contenido principal */}
+              <div className="col-lg-8 bg-white p-5 position-relative">
+                <div className="d-flex flex-wrap justify-content-between align-items-start mb-4">
+                  <div>
+                    <h1 className="fw-bold mb-1">Resilient</h1>
+                    <p className="text-muted mb-1">/rɪˈzɪl.i.ənt/</p>
+                    <span className="badge bg-primary">Adjetivo</span>
+                  </div>
+
+                  <button
+                    className="btn btn-light border-0 shadow-sm rounded-circle p-3"
+                    title="Escuchar"
+                  >
+                    <i className="bi bi-volume-up text-primary fs-5"></i>
+                  </button>
+                </div>
+
+                <p className="mb-3">
+                  <strong>Significado:</strong> Capaz de recuperarse rápidamente de dificultades o situaciones adversas.
+                </p>
+
+                <p className="text-muted mb-4 fst-italic">
+                  “She showed <strong>resilient</strong> behavior after the setback, bouncing back stronger than before.”
+                </p>
+
+                <div className="d-flex flex-wrap gap-3">
+                  <button className="btn btn-primary rounded-pill px-4">
+                    <i className="bi bi-plus-circle me-2"></i>
+                    Agregar a mi lista
+                  </button>
+                  <button className="btn btn-outline-primary rounded-pill px-4">
+                    <i className="bi bi-share me-2"></i>
+                    Compartir
+                  </button>
+                </div>
+
+                {/* Detalle decorativo */}
+                <div
+                  className="position-absolute end-0 bottom-0 opacity-10 pe-none"
+                  style={{ fontSize: '10rem', lineHeight: '1', right: '-20px', bottom: '-40px' }}
+                >
+                  ✨
+                </div>
+              </div>
             </div>
-
-            <button 
-              className="btn btn-light border-0 shadow-sm rounded-circle p-3" 
-              title="Escuchar"
-            >
-              <i className="bi bi-volume-up text-primary fs-5"></i>
-            </button>
-          </div>
-
-          <p className="mb-3">
-            <strong>Significado:</strong> Capaz de recuperarse rápidamente de dificultades o situaciones adversas.
-          </p>
-
-          <p className="text-muted mb-4 fst-italic">
-            “She showed <strong>resilient</strong> behavior after the setback, bouncing back stronger than before.”
-          </p>
-
-          <div className="d-flex flex-wrap gap-3">
-            <button className="btn btn-primary rounded-pill px-4">
-              <i className="bi bi-plus-circle me-2"></i>
-              Agregar a mi lista
-            </button>
-            <button className="btn btn-outline-primary rounded-pill px-4">
-              <i className="bi bi-share me-2"></i>
-              Compartir
-            </button>
-          </div>
-
-          {/* Detalle decorativo */}
-          <div 
-            className="position-absolute end-0 bottom-0 opacity-10 pe-none" 
-            style={{ fontSize: '10rem', lineHeight: '1', right: '-20px', bottom: '-40px' }}
-          >
-            ✨
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
 
 
@@ -228,8 +229,8 @@ export default function Vocabulary() {
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card h-100 border-0">
                   <div className="card-body p-4 text-center">
-                    <div 
-                      className="d-inline-flex align-items-center justify-content-center text-white rounded-circle mb-4" 
+                    <div
+                      className="d-inline-flex align-items-center justify-content-center text-white rounded-circle mb-4"
                       style={{ width: '100px', height: '100px', background: cat.gradient }}
                     >
                       <i className={`bi ${cat.icon} fs-1`}></i>
@@ -318,7 +319,7 @@ export default function Vocabulary() {
         </div>
       </section>
 
-     
+
     </div>
   )
 }

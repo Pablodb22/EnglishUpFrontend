@@ -1,7 +1,13 @@
 export default function Login() {
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center position-relative text-white"
-         style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+   <div
+      className="min-vh-100 d-flex flex-column justify-content-start align-items-center position-relative text-white"
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        paddingTop: '140px', 
+        paddingBottom: '60px'
+      }}
+    >
       <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
 
       <div className="container position-relative animate-in">

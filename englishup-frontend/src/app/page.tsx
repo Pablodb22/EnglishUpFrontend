@@ -169,7 +169,7 @@ export default function Home() {
                       Ejercicios de pronunciación
                     </li>
                   </ul>
-                  <a href="#" className="btn btn-primary w-100">Comenzar ahora</a>
+                  <a href="/grammar" className="btn btn-primary w-100">Comenzar ahora</a>
                 </div>
               </div>
             </div>
@@ -201,7 +201,7 @@ export default function Home() {
                       Gramática intermedia
                     </li>
                   </ul>
-                  <a href="#" className="btn btn-primary w-100">Comenzar ahora</a>
+                  <a href="/grammar" className="btn btn-primary w-100">Comenzar ahora</a>
                 </div>
               </div>
             </div>
@@ -233,7 +233,7 @@ export default function Home() {
                       Certificación incluida
                     </li>
                   </ul>
-                  <a href="#" className="btn btn-primary w-100">Comenzar ahora</a>
+                  <a href="/grammar" className="btn btn-primary w-100">Comenzar ahora</a>
                 </div>
               </div>
             </div>
