@@ -1,74 +1,43 @@
 "use client"
 
-import { useState } from "react"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import * as paginaService from '../../../../services/pagina';
 
 export default function PreguntasPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [showResults, setShowResults] = useState(false)
-
-  const questions = [
-    {
-      id: 1,
-      question: "What ___ you doing yesterday at 5 PM?",
-      options: ["was", "were", "are", "did"],
-      correctAnswer: 1
-    },
-    {
-      id: 2,
-      question: "She ___ to the gym every morning.",
-      options: ["go", "goes", "going", "went"],
-      correctAnswer: 1
-    },
-    {
-      id: 3,
-      question: "I have ___ finished my homework.",
-      options: ["yet", "already", "still", "always"],
-      correctAnswer: 1
-    },
-    {
-      id: 4,
-      question: "If I ___ rich, I would travel the world.",
-      options: ["am", "was", "were", "be"],
-      correctAnswer: 2
-    },
-    {
-      id: 5,
-      question: "The book ___ by millions of people.",
-      options: ["reads", "is reading", "was read", "has read"],
-      correctAnswer: 2
-    },
-    {
-      id: 6,
-      question: "I'm looking forward ___ you again.",
-      options: ["see", "to see", "seeing", "to seeing"],
-      correctAnswer: 3
-    },
-    {
-      id: 7,
-      question: "He speaks English ___ than his brother.",
-      options: ["good", "better", "best", "well"],
-      correctAnswer: 1
-    },
-    {
-      id: 8,
-      question: "We ___ in this house for ten years.",
-      options: ["live", "are living", "have lived", "lived"],
-      correctAnswer: 2
-    },
-    {
-      id: 9,
-      question: "You ___ smoke in this area. It's prohibited.",
-      options: ["don't have to", "mustn't", "shouldn't", "can't"],
-      correctAnswer: 1
-    },
-    {
-      id: 10,
-      question: "By this time tomorrow, I ___ my exam.",
-      options: ["finish", "will finish", "will have finished", "am finishing"],
-      correctAnswer: 2
+  const [questions, setQuestions] = useState<Array<{id:number,question:string,options:string[]}>>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const params = useParams();
+  const nivel = params.nivel;
+  
+  useEffect (() => {
+    async function fetchQuestions() {
+      try {
+        setIsLoading(true)
+        setError(null)
+        if (typeof nivel === 'string') {
+          const respuesta = await paginaService.getQuestions(nivel);
+          console.log(respuesta)
+          setQuestions(respuesta);
+        }
+      } catch(err) {
+        console.error("Error al llamar al servicio pagina:", err);
+        setError("Error al cargar las preguntas. Por favor, intenta nuevamente.")
+      } finally {
+        setIsLoading(false)
+      }
     }
-  ]
+
+    if (nivel) {
+      fetchQuestions();
+    }
+  }, [nivel]);
+
+ 
 
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
@@ -87,7 +56,55 @@ export default function PreguntasPage() {
   return (
     <div className="pt-5 min-vh-100 d-flex align-items-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
       <div className="container py-5">
-        {!showResults ? (
+        {isLoading ? (
+          /* Loading Screen */
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="card border-0 shadow-lg">
+                <div className="card-body p-5 text-center">
+                  <div className="spinner-border text-primary mb-3" role="status">
+                    <span className="visually-hidden">Cargando...</span>
+                  </div>
+                  <h3 className="fw-bold mb-2">Cargando preguntas...</h3>
+                  <p className="text-muted">Por favor espera mientras preparamos tu quiz.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : error ? (
+          /* Error Screen */
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="card border-0 shadow-lg">
+                <div className="card-body p-5 text-center">
+                  <i className="bi bi-exclamation-circle text-danger" style={{ fontSize: '5rem' }}></i>
+                  <h3 className="fw-bold mb-2 mt-3">{error}</h3>
+                  <a href="/grammar" className="btn btn-primary mt-3">
+                    <i className="bi bi-arrow-left me-2"></i>
+                    Volver
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : questions.length === 0 ? (
+          /* No Questions Screen */
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="card border-0 shadow-lg">
+                <div className="card-body p-5 text-center">
+                  <i className="bi bi-inbox" style={{ fontSize: '5rem', opacity: 0.5 }}></i>
+                  <h3 className="fw-bold mb-2 mt-3">Sin preguntas</h3>
+                  <p className="text-muted">No hay preguntas disponibles para este nivel.</p>
+                  <a href="/grammar" className="btn btn-primary mt-3">
+                    <i className="bi bi-arrow-left me-2"></i>
+                    Volver
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : !showResults ? (
           <div className="row justify-content-center">
             <div className="col-lg-8">
               {/* Header Card */}
@@ -161,7 +178,7 @@ export default function PreguntasPage() {
                     
                     <div className="flex-grow-1"></div>
 
-                    <a href="/" className="btn btn-outline-danger px-4">
+                    <a href="/grammar" className="btn btn-outline-danger px-4">
                       <i className="bi bi-x-circle me-2"></i>
                       Salir
                     </a>

@@ -1,4 +1,10 @@
+'use client';
+
+import { useRouter } from "next/navigation";
+
 export default function Grammar() {
+  const router = useRouter();
+
   const topics = [
     // Beginner
     {
@@ -215,7 +221,7 @@ export default function Grammar() {
                     <div className="card-body p-4">
                       <div className="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-3 mb-3"
                         style={{ width: '60px', height: '60px' }}>
-                        <i className={`bi ${topic.icon} fs-3 text-white`}></i>
+                        <i className={`bi ${topic.icon} fs-3 text-success`}></i>
                       </div>
                       <h5 className="fw-bold mb-2">{topic.title}</h5>
                       <p className="text-muted small mb-3">{topic.desc}</p>
@@ -238,7 +244,7 @@ export default function Grammar() {
                         ></div>
                       </div>
 
-                      <a href="#" className="btn btn-success w-100">
+                      <a onClick={() => router.push(`/grammar/preguntas/${topic.title}`)} className="btn btn-success w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar
                       </a>
@@ -267,7 +273,7 @@ export default function Grammar() {
                     <div className="card-body p-4">
                       <div className="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-3 mb-3"
                         style={{ width: '60px', height: '60px' }}>
-                        <i className={`bi ${topic.icon} fs-3 text-white`}></i>
+                        <i className={`bi ${topic.icon} fs-3 text-primary`}></i>
                       </div>
                       <h5 className="fw-bold mb-2">{topic.title}</h5>
                       <p className="text-muted small mb-3">{topic.desc}</p>
@@ -290,7 +296,7 @@ export default function Grammar() {
                         ></div>
                       </div>
 
-                      <a href="#" className="btn btn-primary w-100">
+                      <a onClick={() => router.push(`/grammar/preguntas/${topic.title}`)} className="btn btn-primary w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar
                       </a>
@@ -318,8 +324,15 @@ export default function Grammar() {
                   <div className="card h-100 border-0">
                     <div className="card-body p-4">
                       <div className="d-inline-flex align-items-center justify-content-center rounded-3 mb-3"
-                        style={{ width: '60px', height: '60px', background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)20' }}>
-                        <i className={`bi ${topic.icon} fs-3 text-white`} style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' }}></i>
+                        style={{
+                          width: '60px',
+                          height: '60px',
+                          background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+                        }}>
+                        <i
+                          className={`bi ${topic.icon} fs-3`}
+                          style={{ color: '#6b1b9a', filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.15))' }}
+                        ></i>
                       </div>
 
                       <h5 className="fw-bold mb-2">{topic.title}</h5>
@@ -343,7 +356,7 @@ export default function Grammar() {
                         ></div>
                       </div>
 
-                      <a href="#" className="btn btn-primary w-100">
+                      <a onClick={() => router.push(`/grammar/preguntas/${topic.title}`)} className="btn btn-primary w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar
                       </a>

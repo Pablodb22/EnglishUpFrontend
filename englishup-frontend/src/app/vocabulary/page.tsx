@@ -274,8 +274,8 @@ export default function Vocabulary() {
                     <h4 className="fw-bold mb-2">{item.word}</h4>
                     <p className="text-muted mb-4">{item.translation}</p>
                     <div className="d-flex gap-2 justify-content-center">
-                      <button className="btn btn-outline-primary btn-sm">
-                        <i className="bi bi-volume-up"></i>
+                      <button className="btn btn-light btn-sm border">
+                        <i className="bi bi-volume-up text-primary"></i>
                       </button>
                       <button className="btn btn-primary btn-sm flex-grow-1">
                         <i className="bi bi-plus-lg me-1"></i>
