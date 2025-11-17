@@ -4,16 +4,18 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import * as paginaService from '../../../../services/pagina';
 
+
 export default function PreguntasPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [showResults, setShowResults] = useState(false)
-  const [questions, setQuestions] = useState<Array<{id:number,question:string,options:string[]}>>([])
+  const [questions, setQuestions] = useState<Array<{id:number,question:string,options:string[], correctIndex:number}>>([])
+  const [userAnswers, setUserAnswers] = useState<number[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const params = useParams();
   const nivel = params.nivel;
-  
+
   useEffect (() => {
     async function fetchQuestions() {
       try {
@@ -21,37 +23,64 @@ export default function PreguntasPage() {
         setError(null)
         if (typeof nivel === 'string') {
           const respuesta = await paginaService.getQuestions(nivel);
-          console.log(respuesta)
           setQuestions(respuesta);
         }
       } catch(err) {
-        console.error("Error al llamar al servicio pagina:", err);
         setError("Error al cargar las preguntas. Por favor, intenta nuevamente.")
       } finally {
         setIsLoading(false)
       }
     }
-
     if (nivel) {
       fetchQuestions();
     }
   }, [nivel]);
 
- 
+  // Guardar la respuesta seleccionada para cada pregunta
+  const handleSelectAnswer = (index: number) => {
+    setSelectedAnswer(index);
+  };
 
   const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1)
-      setSelectedAnswer(null)
+    if (selectedAnswer !== null) {
+      const updatedAnswers = [...userAnswers];
+      updatedAnswers[currentQuestion] = selectedAnswer;
+      setUserAnswers(updatedAnswers);
     }
-  }
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setSelectedAnswer(userAnswers[currentQuestion + 1] ?? null);
+    }
+  };
 
   const handlePrevious = () => {
     if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1)
-      setSelectedAnswer(null)
+      setCurrentQuestion(currentQuestion - 1);
+      setSelectedAnswer(userAnswers[currentQuestion - 1] ?? null);
     }
-  }
+  };
+
+  const handleFinish = () => {
+    if (selectedAnswer !== null) {
+      const updatedAnswers = [...userAnswers];
+      updatedAnswers[currentQuestion] = selectedAnswer;
+      setUserAnswers(updatedAnswers);
+    }
+    setShowResults(true);
+  };
+
+  // Calcular resultados
+  const results = questions.map((q, idx) => {
+    const user = userAnswers[idx];
+    return {
+      question: q.question,
+      options: q.options,
+      correctIndex: q.correctIndex,
+      userIndex: user,
+      isCorrect: user === q.correctIndex
+    };
+  });
+  const correctCount = results.filter(r => r.isCorrect).length;
 
   return (
     <div className="pt-5 min-vh-100 d-flex align-items-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
@@ -112,8 +141,7 @@ export default function PreguntasPage() {
                 <div className="card-body p-4">
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <h5 className="mb-1 fw-bold">Quiz de Gramática</h5>
-                      <small className="text-muted">Evaluación de nivel intermedio</small>
+                      <h5 className="mb-1 fw-bold">Quiz de Gramática</h5>                      
                     </div>
                     <div className="text-end">
                       <div className="badge bg-gradient-primary px-3 py-2 fs-6">
@@ -144,7 +172,7 @@ export default function PreguntasPage() {
                     {questions[currentQuestion].options.map((option, index) => (
                       <button
                         key={index}
-                        onClick={() => setSelectedAnswer(index)}
+                        onClick={() => handleSelectAnswer(index)}
                         className={`btn btn-lg text-start p-4 ${
                           selectedAnswer === index 
                             ? 'btn-primary' 
@@ -187,14 +215,16 @@ export default function PreguntasPage() {
                       <button 
                         onClick={handleNext}
                         className="btn btn-primary px-4"
+                        disabled={selectedAnswer === null}
                       >
                         Siguiente
                         <i className="bi bi-chevron-right ms-2"></i>
                       </button>
                     ) : (
                       <button 
-                        onClick={() => setShowResults(true)}
+                        onClick={handleFinish}
                         className="btn btn-success px-4"
+                        disabled={selectedAnswer === null}
                       >
                         <i className="bi bi-send-fill me-2"></i>
                         Enviar
@@ -203,28 +233,17 @@ export default function PreguntasPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Info Card */}
-              <div className="card border-0 bg-white bg-opacity-10 backdrop-blur mt-4">
-                <div className="card-body p-3 text-white text-center">
-                  <small>
-                    <i className="bi bi-info-circle me-2"></i>
-                    Selecciona una respuesta antes de continuar
-                  </small>
-                </div>
-              </div>
             </div>
           </div>
         ) : (
           /* Results Screen */
           <div className="row justify-content-center">
-            <div className="col-lg-8">
+            <div className="col-lg-10">
               <div className="card border-0 shadow-lg animate-in">
                 <div className="card-body p-5 text-center">
                   <div className="mb-4">
                     <i className="bi bi-trophy-fill text-warning" style={{ fontSize: '5rem' }}></i>
                   </div>
-                  
                   <h2 className="fw-bold mb-3">¡Quiz Completado!</h2>
                   <p className="text-muted mb-4">Has terminado la evaluación. Aquí están tus resultados:</p>
 
@@ -233,35 +252,50 @@ export default function PreguntasPage() {
                     <div className="col-md-4">
                       <div className="p-4 bg-light rounded-4">
                         <i className="bi bi-check-circle-fill text-success fs-2 mb-2 d-block"></i>
-                        <h3 className="fw-bold mb-1">8/10</h3>
+                        <h3 className="fw-bold mb-1">{correctCount}/{questions.length}</h3>
                         <small className="text-muted">Respuestas correctas</small>
                       </div>
                     </div>
                     <div className="col-md-4">
                       <div className="p-4 bg-light rounded-4">
                         <i className="bi bi-graph-up-arrow text-primary fs-2 mb-2 d-block"></i>
-                        <h3 className="fw-bold mb-1">80%</h3>
+                        <h3 className="fw-bold mb-1">{Math.round((correctCount/questions.length)*100)}%</h3>
                         <small className="text-muted">Puntuación</small>
                       </div>
                     </div>
                     <div className="col-md-4">
                       <div className="p-4 bg-light rounded-4">
-                        <i className="bi bi-clock-fill text-info fs-2 mb-2 d-block"></i>
-                        <h3 className="fw-bold mb-1">12:34</h3>
-                        <small className="text-muted">Tiempo total</small>
+                        <i className="bi bi-list-check text-info fs-2 mb-2 d-block"></i>
+                        <h3 className="fw-bold mb-1">{questions.length}</h3>
+                        <small className="text-muted">Total preguntas</small>
                       </div>
                     </div>
                   </div>
 
-                  {/* Performance Message */}
-                  <div className="alert alert-success mb-4" role="alert">
-                    <h5 className="alert-heading">
-                      <i className="bi bi-star-fill me-2"></i>
-                      ¡Excelente trabajo!
-                    </h5>
-                    <p className="mb-0">
-                      Has demostrado un buen dominio del tema. Sigue practicando para mejorar aún más.
-                    </p>
+                  {/* Detalle de cada pregunta */}
+                  <div className="table-responsive mb-4">
+                    <table className="table table-bordered align-middle">
+                      <thead className="table-light">
+                        <tr>
+                          <th>#</th>
+                          <th>Pregunta</th>
+                          <th>Tu respuesta</th>
+                          <th>Respuesta correcta</th>
+                          <th>Resultado</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {results.map((r, idx) => (
+                          <tr key={idx} className={r.isCorrect ? 'table-success' : 'table-danger'}>
+                            <td>{idx+1}</td>
+                            <td className="text-start">{r.question}</td>
+                            <td>{typeof r.userIndex === 'number' ? r.options[r.userIndex] : <span className="text-muted">Sin responder</span>}</td>
+                            <td>{r.options[r.correctIndex]}</td>
+                            <td>{r.isCorrect ? <span className="badge bg-success">Correcta</span> : <span className="badge bg-danger">Incorrecta</span>}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
 
                   {/* Action Buttons */}
@@ -270,7 +304,7 @@ export default function PreguntasPage() {
                       onClick={() => {
                         setShowResults(false)
                         setCurrentQuestion(0)
-                        setSelectedAnswer(null)
+                        setSelectedAnswer(userAnswers[0] ?? null)
                       }}
                       className="btn btn-primary btn-lg px-5"
                     >
