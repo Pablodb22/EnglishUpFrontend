@@ -1,75 +1,73 @@
+'use client';
+
+
+import { useRouter } from "next/navigation";
+
 export default function Vocabulary() {
+  const router = useRouter();
+
   const categories = [
     {
       title: 'Comida y Bebida',
       icon: 'bi-cup-hot',
-      desc: 'Vocabulario para restaurantes, cocina y alimentos.',
-      words: 180,
+      desc: 'Vocabulario para restaurantes, cocina y alimentos.',      
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
     },
     {
       title: 'Viajes y Turismo',
       icon: 'bi-airplane',
-      desc: 'Palabras esenciales para aeropuertos y destinos.',
-      words: 220,
+      desc: 'Palabras esenciales para aeropuertos y destinos.',      
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
     },
     {
       title: 'Trabajo y Oficina',
       icon: 'bi-briefcase',
-      desc: 'Términos profesionales y vocabulario corporativo.',
-      words: 195,
+      desc: 'Términos profesionales y vocabulario corporativo.',      
       gradient: 'linear-gradient(135deg, #6a76ac 0%, #764ba2 100%)'
     },
     {
       title: 'Salud y Bienestar',
       icon: 'bi-heart-pulse',
-      desc: 'Vocabulario médico y de actividad física.',
-      words: 165,
+      desc: 'Vocabulario médico y de actividad física.',      
       gradient: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
     },
     {
       title: 'Tecnología',
       icon: 'bi-laptop',
       desc: 'Términos de computación, internet y gadgets.',
-      words: 210,
       gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
     },
     {
       title: 'Hogar y Familia',
       icon: 'bi-house-heart',
       desc: 'Vocabulario doméstico y relaciones familiares.',
-      words: 175,
       gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
     },
     {
       title: 'Deportes',
       icon: 'bi-trophy',
-      desc: 'Términos deportivos y actividades físicas.',
-      words: 140,
+      desc: 'Términos deportivos y actividades físicas.',      
       gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
     },
     {
       title: 'Educación',
       icon: 'bi-mortarboard',
-      desc: 'Vocabulario académico y escolar.',
-      words: 190,
+      desc: 'Vocabulario académico y escolar.',      
       gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
     },
     {
       title: 'Naturaleza',
       icon: 'bi-tree',
-      desc: 'Animales, plantas y medio ambiente.',
-      words: 160,
+      desc: 'Animales, plantas y medio ambiente.',      
       gradient: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)'
     },
   ]
 
   const featuredWords = [
-    { word: 'Serendipity', translation: 'Casualidad afortunada', level: 'Advanced', color: 'danger' },
-    { word: 'Procrastinate', translation: 'Procrastinar', level: 'Intermediate', color: 'primary' },
-    { word: 'Ambiguous', translation: 'Ambiguo', level: 'Advanced', color: 'danger' },
-    { word: 'Enthusiasm', translation: 'Entusiasmo', level: 'Intermediate', color: 'primary' },
+    { word: 'Serendipity', translation: 'Casualidad afortunada'},
+    { word: 'Procrastinate', translation: 'Procrastinar'},
+    { word: 'Ambiguous', translation: 'Ambiguo'},
+    { word: 'Enthusiasm', translation: 'Entusiasmo'},
   ]
 
   return (
@@ -197,15 +195,7 @@ export default function Vocabulary() {
                     <i className="bi bi-share me-2"></i>
                     Compartir
                   </button>
-                </div>
-
-                {/* Detalle decorativo */}
-                <div
-                  className="position-absolute end-0 bottom-0 opacity-10 pe-none"
-                  style={{ fontSize: '10rem', lineHeight: '1', right: '-20px', bottom: '-40px' }}
-                >
-                  ✨
-                </div>
+                </div>                
               </div>
             </div>
           </div>
@@ -236,16 +226,10 @@ export default function Vocabulary() {
                       <i className={`bi ${cat.icon} fs-1`}></i>
                     </div>
                     <h5 className="fw-bold mb-3">{cat.title}</h5>
-                    <p className="text-muted small mb-4">{cat.desc}</p>
-
-                    <div className="badge bg-light text-dark border mb-4 px-4 py-2">
-                      <i className="bi bi-card-text me-2"></i>
-                      <strong>{cat.words}</strong> palabras disponibles
-                    </div>
-
+                    <p className="text-muted small mb-4">{cat.desc}</p>                   
                     <div className="d-grid gap-2">
-                      <a href="#" className="btn btn-primary">
-                        <i className="bi bi-play-circle-fill me-2"></i>
+                                            <a onClick={() => router.push(`/vocabulary/palabras/${cat.title}`)} className="btn btn-success w-100">
+                        <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar a aprender
                       </a>
                     </div>
@@ -269,8 +253,7 @@ export default function Vocabulary() {
             {featuredWords.map((item, index) => (
               <div key={index} className="col-lg-3 col-md-6">
                 <div className="card border-0 h-100 text-center p-4">
-                  <div className="card-body">
-                    <span className={`badge bg-${item.color} mb-3 px-3 py-2`}>{item.level}</span>
+                  <div className="card-body">                    
                     <h4 className="fw-bold mb-2">{item.word}</h4>
                     <p className="text-muted mb-4">{item.translation}</p>
                     <div className="d-flex gap-2 justify-content-center">

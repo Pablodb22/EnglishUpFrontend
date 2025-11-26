@@ -1,10 +1,45 @@
+'use client';
+import React, { useState } from 'react';
+import * as clienteService from '@/services/cliente';
+
 export default function Register() {
+
+    const [formData, setFormData] = useState({nombre: '',correo: '',contrasena: '',repetircontra:'',fecha_creacion: new Date().toISOString()})
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+      })
+    }
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();    
+    if(formData.contrasena !== formData.repetircontra){
+        alert("Las contraseñas no coinciden");
+        return;
+    }
+    try{
+        const respuesta=await clienteService.registrarse(formData);        
+        if(respuesta.ok){
+            alert("Registro exitoso. Ahora puedes iniciar sesión.");
+            window.location.href="/login";
+        }else{
+            alert("Error en el registro: " + respuesta.message);
+        }
+    }catch(error){
+        console.error("Error al registrarse:", error);
+    }
+    
+
+  }
+
   return (
     <div
       className="min-vh-100 d-flex flex-column justify-content-start position-relative text-white"
       style={{
         background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        paddingTop: '160px', // 👈 más espacio arriba
+        paddingTop: '160px', 
         paddingBottom: '60px'
       }}
     >
@@ -31,59 +66,61 @@ export default function Register() {
 
               <form>
                 <div className="mb-3">
-                  <label className="form-label fw-semibold text-white-50">
+                  <label htmlFor="nombre" className="form-label fw-semibold text-white-50">
                     <i className="bi bi-person-fill me-2 text-white"></i> Nombre completo
                   </label>
                   <input
                     type="text"
+                    name='nombre'
                     className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark"
                     placeholder="Juan Pérez"
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label fw-semibold text-white-50">
+                  <label htmlFor="correo" className="form-label fw-semibold text-white-50">
                     <i className="bi bi-envelope-fill me-2 text-white"></i> Email
                   </label>
                   <input
                     type="email"
                     className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark"
                     placeholder="tu@email.com"
+                    name='correo'
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label fw-semibold text-white-50">
+                  <label htmlFor="contrasena" className="form-label fw-semibold text-white-50">
                     <i className="bi bi-lock-fill me-2 text-white"></i> Contraseña
                   </label>
                   <input
                     type="password"
                     className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark"
                     placeholder="Mínimo 8 caracteres"
+                    name='contrasena'
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label fw-semibold text-white-50">
+                  <label htmlFor="repetircontra" className="form-label fw-semibold text-white-50">
                     <i className="bi bi-shield-lock-fill me-2 text-white"></i> Confirmar contraseña
                   </label>
                   <input
                     type="password"
                     className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark"
                     placeholder="Repite tu contraseña"
+                    name='repetircontra'
+                    onChange={handleChange}
                   />
-                </div>
-
-                <div className="form-check mb-4">
-                  <input className="form-check-input" type="checkbox" id="terms" />
-                  <label className="form-check-label small text-white-50" htmlFor="terms">
-                    Acepto los <a href="#" className="text-white text-decoration-none">términos y condiciones</a>
-                  </label>
                 </div>
 
                 <button
                   type="submit"
                   className="btn btn-light btn-lg w-100 fw-semibold shadow-sm"
+                  onClick={handleSubmit}
                 >
                   <i className="bi bi-rocket-takeoff me-2"></i> Crear mi cuenta
                 </button>
@@ -98,7 +135,6 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Opcional: mensaje o decoración al final */}
       <div className="text-center mt-5 text-white-50 small position-relative">
         <i className="bi bi-shield-check me-1"></i> Tus datos están seguros y cifrados
       </div>
