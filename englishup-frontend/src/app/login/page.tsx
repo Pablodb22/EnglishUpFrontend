@@ -1,4 +1,33 @@
+'use client';
+import React, { useState } from 'react';
+import * as clienteService from '@/services/cliente';
+
 export default function Login() {
+  const [formData, setFormData] = useState({correo: '',contrasena: ''})
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = () => async (event: React.FormEvent) => {
+    event.preventDefault();
+    try{
+        const respuesta=await clienteService.iniciarSesion(formData);        
+        if(respuesta.ok){
+            alert("Inicio de sesión exitoso. ¡Bienvenido!");
+            window.location.href="/";
+        }else{
+            alert("Error al iniciar sesión: " + respuesta.message);
+        }
+    }catch(error){
+        console.error("Error al iniciar sesión:", error);
+    }
+  }
+
+
   return (
    <div
       className="min-vh-100 d-flex flex-column justify-content-start align-items-center position-relative text-white"
@@ -26,19 +55,19 @@ export default function Login() {
 
               <form>
                 <div className="mb-3">
-                  <label className="form-label fw-semibold text-white-50">
+                  <label className="form-label fw-semibold text-white-50" htmlFor='correo'>
                     <i className="bi bi-envelope-fill me-2 text-white"></i>
                     Email
                   </label>
-                  <input type="email" className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark" placeholder="tu@email.com" />
+                  <input type="email" name="correo" className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark" placeholder="tu@email.com" onChange={handleChange} />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label fw-semibold text-white-50">
+                  <label className="form-label fw-semibold text-white-50" htmlFor='contrasena'>
                     <i className="bi bi-lock-fill me-2 text-white"></i>
                     Contraseña
                   </label>
-                  <input type="password" className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark" placeholder="••••••••" />
+                  <input type="password" name='contrasena' className="form-control form-control-lg bg-white bg-opacity-75 border-0 text-dark" placeholder="••••••••" onChange={handleChange}/>
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -51,7 +80,7 @@ export default function Login() {
                   <a href="#" className="small text-white-50 text-decoration-none">¿Olvidaste tu contraseña?</a>
                 </div>
 
-                <button type="submit" className="btn btn-light btn-lg w-100 fw-semibold shadow-sm">
+                <button type="submit" className="btn btn-light btn-lg w-100 fw-semibold shadow-sm" onClick={handleSubmit()}>
                   <i className="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
                 </button>
 

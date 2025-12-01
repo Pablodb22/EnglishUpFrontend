@@ -14,3 +14,20 @@ export async function registrarse(formData: {nombre: string, correo: string, con
     }
     return data;
 }
+
+export async function iniciarSesion(formData: {correo: string, contrasena: string}) {
+    const { correo, contrasena } = formData;
+    const body = JSON.stringify({ correo, contrasena });
+    const response = await fetch(`http://localhost:3001/login/buscar`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body,
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        return { ok: false, message: data.message || 'Error al iniciar sesión' };
+    }
+    return data;
+}
