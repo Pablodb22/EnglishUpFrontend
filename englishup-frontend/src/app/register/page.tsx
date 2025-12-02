@@ -1,10 +1,12 @@
 'use client';
 import React, { useState } from 'react';
+import Popup from '@/components/Popup';
 import * as clienteService from '@/services/cliente';
 
 export default function Register() {
 
-    const [formData, setFormData] = useState({nombre: '',correo: '',contrasena: '',repetircontra:'',fecha_creacion: new Date().toISOString()})
+    const [formData, setFormData] = useState({nombre: '',correo: '',contrasena: '',repetircontra:'',fecha_creacion: new Date().toISOString(), nivel:''})
+    const [popup, setPopup] = useState<{type: 'success' | 'error', message: string} | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({
@@ -13,33 +15,30 @@ export default function Register() {
       })
     }
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();    
+    async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
     if(formData.contrasena !== formData.repetircontra){
-        alert("Las contraseñas no coinciden");
-        return;
+      setPopup({type: 'error', message: 'Las contraseñas no coinciden'});
+      return;
     }
     try{
-        const respuesta=await clienteService.registrarse(formData);        
-        if(respuesta.ok){
-            alert("Registro exitoso. Ahora puedes iniciar sesión.");
-            window.location.href="/login";
-        }else{
-            alert("Error en el registro: " + respuesta.message);
-        }
+      const respuesta=await clienteService.registrarse(formData);
+      if(respuesta.ok){
+        setPopup({type: 'success', message: 'Registro exitoso. Ahora puedes iniciar sesión.'});
+      }else{
+        setPopup({type: 'error', message: 'Error en el registro: ' + respuesta.message});
+      }
     }catch(error){
-        console.error("Error al registrarse:", error);
+      setPopup({type: 'error', message: 'Error al registrarse: ' + (error instanceof Error ? error.message : 'Error desconocido')});
     }
-    
-
-  }
+    }
 
   return (
     <div
       className="min-vh-100 d-flex flex-column justify-content-start position-relative text-white"
       style={{
         background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        paddingTop: '160px', 
+        paddingTop: '160px',
         paddingBottom: '60px'
       }}
     >
@@ -138,6 +137,18 @@ export default function Register() {
       <div className="text-center mt-5 text-white-50 small position-relative">
         <i className="bi bi-shield-check me-1"></i> Tus datos están seguros y cifrados
       </div>
+      {popup && (
+        <Popup
+          type={popup.type}
+          message={popup.message}
+          onClose={() => {
+            if (popup.type === 'success') {
+              window.location.href = '/login';
+            }
+            setPopup(null);
+          }}
+        />
+      )}
     </div>
   );
 }

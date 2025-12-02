@@ -1,4 +1,4 @@
-export async function registrarse(formData: {nombre: string, correo: string, contrasena: string, repetircontra?: string, fecha_creacion: string}) {   
+export async function registrarse(formData: {nombre: string, correo: string, contrasena: string, repetircontra?: string, fecha_creacion: string,nivel:string}) {   
     const { nombre, correo, contrasena, fecha_creacion } = formData;
     const body = JSON.stringify({ nombre, correo, contrasena, fecha_creacion });
     const response = await fetch(`http://localhost:3001/registro/crear`, {

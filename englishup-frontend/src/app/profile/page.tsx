@@ -23,10 +23,6 @@ export default function Profile() {
                   <i className="bi bi-bookmark-star-fill me-1"></i>
                   Intermediate
                 </span>
-                <span className="badge bg-warning text-dark px-3 py-2">
-                  <i className="bi bi-fire me-1"></i>
-                  15 días de racha
-                </span>
               </div>
               <h1 className="display-5 fw-bold mb-3">Juan Pérez</h1>
               <p className="lead mb-4 text-white-50">
@@ -47,8 +43,7 @@ export default function Profile() {
           <div className="row g-4">
             {/* Personal Information */}
             <div className="col-lg-8">
-              <div className="text-center text-lg-start mb-4">
-                <span className="badge bg-gradient-primary text-white mb-2 px-3 py-2">Mi Perfil</span>
+              <div className="text-center text-lg-start mb-4">                
                 <h2 className="display-6 fw-bold mb-3">Información Personal</h2>
                 <p className="text-muted">
                   Mantén tu información actualizada para una mejor experiencia de aprendizaje
@@ -77,26 +72,14 @@ export default function Profile() {
                           <i className="bi bi-bookmark-star-fill me-2 text-primary"></i>
                           Nivel de Inglés
                         </label>
-                        <select className="form-select" id="level">
-                          <option>Beginner (A1-A2)</option>
-                          <option selected>Intermediate (B1-B2)</option>
-                          <option>Advanced (C1-C2)</option>
-                        </select>
+                        <input type="email" className="form-control" id="email" defaultValue="Necesitas prueba de nivel" disabled />
                       </div>
                       <div className="col-md-6">
                         <label htmlFor="nativeLanguage" className="form-label">
                           <i className="bi bi-translate me-2 text-primary"></i>
                           Idioma Nativo
                         </label>
-                        <input type="text" className="form-control" id="nativeLanguage" defaultValue="Español" />
-                      </div>
-                      <div className="col-12">
-                        <label htmlFor="goal" className="form-label">
-                          <i className="bi bi-target me-2 text-primary"></i>
-                          Objetivo de aprendizaje
-                        </label>
-                        <textarea className="form-control" id="goal" rows={3} 
-                                  placeholder="Ej: Mejorar mi inglés para viajar al extranjero y avanzar en mi carrera profesional"></textarea>
+                        <input type="text" className="form-control" id="nativeLanguage" defaultValue="Español" disabled />
                       </div>
                     </div>
                     <div className="mt-4 d-flex gap-3 flex-wrap">
@@ -104,7 +87,7 @@ export default function Profile() {
                         <i className="bi bi-check-lg me-2"></i>
                         Guardar Cambios
                       </button>
-                      <button type="button" className="btn btn-outline-secondary btn-lg px-5">
+                      <button type="button" className="btn btn-outline-danger btn-lg px-5">
                         <i className="bi bi-x-lg me-2"></i>
                         Cancelar
                       </button>
@@ -116,8 +99,7 @@ export default function Profile() {
 
             {/* Daily Goals */}
             <div className="col-lg-4">
-              <div className="text-center text-lg-start mb-4">
-                <span className="badge bg-gradient-success text-white mb-2 px-3 py-2">Objetivos</span>
+              <div className="text-center text-lg-start mb-4">                
                 <h2 className="display-6 fw-bold mb-3">Objetivos Diarios</h2>
               </div>
               <div className="card border-0">

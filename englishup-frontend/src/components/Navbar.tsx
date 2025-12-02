@@ -8,15 +8,24 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+  const [usuario, setUsuario] = useState<string | null>(null);
 
-  // 💎 Gradiente institucional (mismo que CSS global)
   const gradient = 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)'
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll) 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+    useEffect(() => {
+    setUsuario(localStorage.getItem('usuario'));    
+    const handleStorage = () => setUsuario(localStorage.getItem('usuario'));
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
+  
 
   return (
     <nav
@@ -76,7 +85,8 @@ export default function Navbar() {
               { href: '/', icon: 'bi-house-door', label: 'Inicio' },
               { href: '/grammar', icon: 'bi-book', label: 'Gramática' },
               { href: '/vocabulary', icon: 'bi-journal-text', label: 'Vocabulario' },
-              { href: '/profile', icon: 'bi-person', label: 'Perfil' },
+              // Solo mostrar perfil si hay usuario
+              ...(usuario ? [{ href: '/profile', icon: 'bi-person', label: 'Perfil' }] : []),
             ].map(({ href, icon, label }) => {
               const isActive = pathname === href
               return (
@@ -111,31 +121,33 @@ export default function Navbar() {
               )
             })}
 
-            {/* 🔐 LOGIN BUTTON */}
-            <li className="nav-item mt-3 mt-lg-0 ms-lg-3">
-              <Link
-                href="/login"
-                className="btn d-flex align-items-center justify-content-center px-4 py-2 rounded-pill"
-                style={{
-                  background: gradient,
-                  border: 'none',
-                  fontWeight: '600',
-                  color: '#fff',
-                  boxShadow: '0 6px 14px rgba(24,40,72,0.2)',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 8px 18px rgba(24,40,72,0.25)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 6px 14px rgba(24,40,72,0.2)'
-                }}
-              >
-                <i className="bi bi-box-arrow-in-right me-2"></i> Iniciar sesión
-              </Link>
-            </li>
+            {/* 🔐 LOGIN BUTTON solo si NO hay usuario */}
+            {!usuario && (
+              <li className="nav-item mt-3 mt-lg-0 ms-lg-3">
+                <Link
+                  href="/login"
+                  className="btn d-flex align-items-center justify-content-center px-4 py-2 rounded-pill"
+                  style={{
+                    background: gradient,
+                    border: 'none',
+                    fontWeight: '600',
+                    color: '#fff',
+                    boxShadow: '0 6px 14px rgba(24,40,72,0.2)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 8px 18px rgba(24,40,72,0.25)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 6px 14px rgba(24,40,72,0.2)'
+                  }}
+                >
+                  <i className="bi bi-box-arrow-in-right me-2"></i> Iniciar sesión
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

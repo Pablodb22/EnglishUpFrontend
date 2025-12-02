@@ -1,9 +1,11 @@
 'use client';
 import React, { useState } from 'react';
+import Popup from '@/components/Popup';
 import * as clienteService from '@/services/cliente';
 
 export default function Login() {
   const [formData, setFormData] = useState({correo: '',contrasena: ''})
+  const [popup, setPopup] = useState<{type: 'success' | 'error', message: string} | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -12,20 +14,21 @@ export default function Login() {
     })
   }
 
-  const handleSubmit = () => async (event: React.FormEvent) => {
+    const handleSubmit = () => async (event: React.FormEvent) => {
     event.preventDefault();
     try{
-        const respuesta=await clienteService.iniciarSesion(formData);        
-        if(respuesta.ok){
-            alert("Inicio de sesión exitoso. ¡Bienvenido!");
-            window.location.href="/";
-        }else{
-            alert("Error al iniciar sesión: " + respuesta.message);
-        }
+      const respuesta=await clienteService.iniciarSesion(formData);
+      if(respuesta.ok){       
+        const usuarioJSON = JSON.stringify(respuesta.data);        
+        localStorage.setItem('usuario', usuarioJSON);
+        setPopup({type: 'success', message: 'Inicio de sesión exitoso. ¡Bienvenido!'});        
+      }else{
+        setPopup({type: 'error', message: 'Error al iniciar sesión: ' + respuesta.message});
+      }
     }catch(error){
-        console.error("Error al iniciar sesión:", error);
+      setPopup({type: 'error', message: 'Error al iniciar sesión: ' + (error instanceof Error ? error.message : 'Error desconocido')});
     }
-  }
+    }
 
 
   return (
@@ -33,7 +36,7 @@ export default function Login() {
       className="min-vh-100 d-flex flex-column justify-content-start align-items-center position-relative text-white"
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        paddingTop: '140px', 
+        paddingTop: '140px',
         paddingBottom: '60px'
       }}
     >
@@ -45,7 +48,7 @@ export default function Login() {
             {/* Card */}
             <div className="card bg-white bg-opacity-10 border-0 shadow-lg backdrop-blur rounded-4 p-4">
               <div className="text-center mb-4">
-                <div className="d-inline-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-circle mb-3" 
+                <div className="d-inline-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-circle mb-3"
                      style={{ width: '80px', height: '80px' }}>
                   <i className="bi bi-mortarboard-fill text-light fs-1"></i>
                 </div>
@@ -93,6 +96,18 @@ export default function Login() {
           </div>
         </div>
       </div>
+      {popup && (
+        <Popup
+          type={popup.type}
+          message={popup.message}
+          onClose={() => {
+            if (popup.type === 'success') {
+              window.location.href = '/';
+            }
+            setPopup(null);
+          }}
+        />
+      )}
     </div>
   );
 }
