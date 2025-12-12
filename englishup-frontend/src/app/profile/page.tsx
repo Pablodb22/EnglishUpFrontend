@@ -1,6 +1,86 @@
+'use client';
+import { useEffect, useState } from "react";
+import * as clienteService from '@/services/cliente';
+import Popup from "@/components/Popup";
+
 export default function Profile() {
+  const [level, setLevel] = useState<string>('');
+  const [formData, setFormData] = useState({nombre: '',correo: '', correoOriginal: ''});
+  const [popup, setPopup] = useState<{type: 'success' | 'error', message: string} | null>(null);
+  const [usuario,setUsuario]=useState<{nombre_completo:string,correo:string,fecha_creacion:string,nivel:string} | null>(null);
+
+  const formatofecha = usuario?.fecha_creacion 
+    ? new Date(usuario.fecha_creacion).toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',    
+      })
+    : '';
+  const inicial=usuario?.nombre_completo.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+  
+  useEffect(() => {
+    const usuarioJSON = localStorage.getItem('usuario');
+    const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
+    setUsuario(usuario);
+    if (usuario) {
+      setFormData({
+        nombre: usuario.nombre_completo,
+        correo: usuario.correo,
+        correoOriginal: usuario.correo
+      });
+      const nivel = usuario.nivel;
+      if (nivel != null) {
+        setLevel(nivel);
+      } else {
+        setLevel('Necesitas prueba de nivel');
+      }
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  async function modificarperfil(e?: React.FormEvent) {
+    if (e) e.preventDefault();
+    try {
+      const respuesta = await clienteService.modificarperfil(formData);
+      if (respuesta.ok) {
+        // Actualizar el estado local del usuario
+        const usuarioActualizado = {
+          ...usuario!,
+          nombre_completo: formData.nombre,
+          correo: formData.correo
+        };
+        
+        // Actualizar localStorage con los nuevos datos
+        localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+        
+        // Actualizar el estado del componente
+        setUsuario(usuarioActualizado);
+        
+        // Actualizar correoOriginal para futuras modificaciones
+        setFormData({
+          ...formData,
+          correoOriginal: formData.correo
+        });
+        
+        setPopup({type: 'success', message: 'Datos del usuario modificados correctamente.'});                
+      } else {
+        setPopup({type: 'error', message: 'Error al modificar: ' + respuesta.message});
+        console.log(respuesta.message);
+      }
+    } catch (error) {
+      console.error('Error al modificar el perfil: ', error);
+      setPopup({type: 'error', message: 'Error al conectar con el servidor'});
+    }
+  }
+
   return (
     <div className="pt-5">
+  
       {/* Profile Header - Hero Style */}
       <section className="hero text-white position-relative animate-in">
         <div className="container">
@@ -9,7 +89,7 @@ export default function Profile() {
               <div className="d-inline-block position-relative animate-in-left">
                 <div className="bg-white rounded-circle d-flex align-items-center justify-content-center mx-auto" 
                      style={{ width: '140px', height: '140px', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
-                  <span className="text-primary fw-bold" style={{ fontSize: '3.5rem' }}>JP</span>
+                  <span className="text-primary fw-bold" style={{ fontSize: '3.5rem' }}>{inicial}</span>
                 </div>
                 <span className="position-absolute bottom-0 end-0 bg-success border border-3 border-white rounded-circle" 
                       style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -21,16 +101,16 @@ export default function Profile() {
               <div className="d-flex flex-wrap gap-2 mb-3">
                 <span className="badge bg-light text-primary px-3 py-2">
                   <i className="bi bi-bookmark-star-fill me-1"></i>
-                  Intermediate
+                  {level}
                 </span>
               </div>
-              <h1 className="display-5 fw-bold mb-3">Juan Pérez</h1>
+              <h1 className="display-5 fw-bold mb-3">{usuario?.nombre_completo}</h1>
               <p className="lead mb-4 text-white-50">
                 <i className="bi bi-envelope-fill me-2"></i>
-                juan@ejemplo.com
+                {usuario?.correo}
                 <span className="mx-3">•</span>
                 <i className="bi bi-calendar-check me-2"></i>
-                Miembro desde Enero 2024
+                Miembro desde {formatofecha}
               </p>
             </div>
           </div>
@@ -42,37 +122,37 @@ export default function Profile() {
         <div className="container">
           <div className="row g-4">
             {/* Personal Information */}
-            <div className="col-lg-8">
+            <div className="col-lg-12">
               <div className="text-center text-lg-start mb-4">                
                 <h2 className="display-6 fw-bold mb-3">Información Personal</h2>
-                <p className="text-muted">
+                <p className="text-center">
                   Mantén tu información actualizada para una mejor experiencia de aprendizaje
                 </p>
               </div>
               <div className="card border-0">
                 <div className="card-body p-4">
-                  <form>
+                  <form onSubmit={modificarperfil}>
                     <div className="row g-4">
                       <div className="col-md-6">
                         <label htmlFor="name" className="form-label">
                           <i className="bi bi-person-fill me-2 text-primary"></i>
                           Nombre completo
                         </label>
-                        <input type="text" className="form-control" id="name" defaultValue="Juan Pérez" />
+                        <input type="text" className="form-control" id="name" value={formData.nombre} name="nombre" onChange={handleChange} />
                       </div>
                       <div className="col-md-6">
                         <label htmlFor="email" className="form-label">
                           <i className="bi bi-envelope-fill me-2 text-primary"></i>
                           Email
                         </label>
-                        <input type="email" className="form-control" id="email" defaultValue="juan@ejemplo.com" disabled />
+                        <input type="email" className="form-control" id="email" value={formData.correo} name="correo" onChange={handleChange} />
                       </div>
                       <div className="col-md-6">
                         <label htmlFor="level" className="form-label">
                           <i className="bi bi-bookmark-star-fill me-2 text-primary"></i>
                           Nivel de Inglés
-                        </label>
-                        <input type="email" className="form-control" id="email" defaultValue="Necesitas prueba de nivel" disabled />
+                        </label>                        
+                        <input type="text" className="form-control" id="level" value={level} disabled />
                       </div>
                       <div className="col-md-6">
                         <label htmlFor="nativeLanguage" className="form-label">
@@ -86,79 +166,25 @@ export default function Profile() {
                       <button type="submit" className="btn btn-primary btn-lg px-5">
                         <i className="bi bi-check-lg me-2"></i>
                         Guardar Cambios
-                      </button>
-                      <button type="button" className="btn btn-outline-danger btn-lg px-5">
-                        <i className="bi bi-x-lg me-2"></i>
-                        Cancelar
-                      </button>
+                      </button>                      
                     </div>
                   </form>
                 </div>
               </div>
             </div>
 
-            {/* Daily Goals */}
-            <div className="col-lg-4">
-              <div className="text-center text-lg-start mb-4">                
-                <h2 className="display-6 fw-bold mb-3">Objetivos Diarios</h2>
-              </div>
-              <div className="card border-0">
-                <div className="card-body p-4">
-                  <div className="mb-4">
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-clock-fill text-primary me-2"></i>
-                        <span className="fw-semibold">Practicar 30 minutos</span>
-                      </div>
-                      <span className="badge bg-primary">20/30</span>
-                    </div>
-                    <div className="progress" style={{ height: '10px' }}>
-                      <div className="progress-bar" style={{ width: '66%' }}></div>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-book-fill text-success me-2"></i>
-                        <span className="fw-semibold">Completar 2 lecciones</span>
-                      </div>
-                      <span className="badge bg-success">
-                        <i className="bi bi-check-lg"></i>
-                        2/2
-                      </span>
-                    </div>
-                    <div className="progress" style={{ height: '10px' }}>
-                      <div className="progress-bar bg-success" style={{ width: '100%' }}></div>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-journal-text text-warning me-2"></i>
-                        <span className="fw-semibold">Aprender 10 palabras</span>
-                      </div>
-                      <span className="badge bg-warning text-dark">7/10</span>
-                    </div>
-                    <div className="progress" style={{ height: '10px' }}>
-                      <div className="progress-bar bg-warning" style={{ width: '70%' }}></div>
-                    </div>
-                  </div>
-                  <button className="btn btn-success w-100 btn-lg">
-                    <i className="bi bi-play-circle-fill me-2"></i>
-                    Continuar estudiando
-                  </button>
-                  <div className="text-center mt-3">
-                    <small className="text-muted">
-                      <i className="bi bi-fire text-danger me-1"></i>
-                      ¡No pierdas tu racha de 15 días!
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
+      {popup && (
+        <Popup
+          type={popup.type}
+          message={popup.message}
+          onClose={() => {                  
+            setPopup(null);
+          }}
+        />
+      )}
     </div>
   )
 }

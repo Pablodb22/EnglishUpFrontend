@@ -84,8 +84,7 @@ export default function Navbar() {
             {[
               { href: '/', icon: 'bi-house-door', label: 'Inicio' },
               { href: '/grammar', icon: 'bi-book', label: 'Gramática' },
-              { href: '/vocabulary', icon: 'bi-journal-text', label: 'Vocabulario' },
-              // Solo mostrar perfil si hay usuario
+              { href: '/vocabulary', icon: 'bi-journal-text', label: 'Vocabulario' },              
               ...(usuario ? [{ href: '/profile', icon: 'bi-person', label: 'Perfil' }] : []),
             ].map(({ href, icon, label }) => {
               const isActive = pathname === href

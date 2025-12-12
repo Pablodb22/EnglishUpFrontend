@@ -31,3 +31,20 @@ export async function iniciarSesion(formData: {correo: string, contrasena: strin
     }
     return data;
 }
+
+export async function modificarperfil(formData: {nombre: string, correo: string, correoOriginal: string}) {   
+    const { nombre, correo, correoOriginal } = formData;
+    const body = JSON.stringify({ nombre, correo, correoOriginal });
+    const response = await fetch(`http://localhost:3001/modificar/usuario`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body,
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        return { ok: false, message: data.message || 'Error al modificar el perfil' };
+    }
+    return data;
+}
