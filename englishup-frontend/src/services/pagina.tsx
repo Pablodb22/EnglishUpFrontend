@@ -33,3 +33,19 @@ export async function getWords(tema: string) {
     console.log(data)
     return data;
 }
+
+export async function postNivel(formData: {nivel: string,correo:string}) {
+    const response=await fetch(`http://localhost:3001/modificar/nivel`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        return { ok: false, message: data.message || 'Error al actualizar el nivel' };
+    }
+    return data;
+
+}

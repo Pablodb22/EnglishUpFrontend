@@ -17,9 +17,15 @@ export default function Profile() {
     : '';
   const inicial=usuario?.nombre_completo.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
   
-  useEffect(() => {
+  // Función para cargar datos del usuario
+  const cargarDatosUsuario = () => {
+    console.log('🔄 Cargando datos del usuario desde localStorage...');
     const usuarioJSON = localStorage.getItem('usuario');
+    console.log('📦 Usuario JSON:', usuarioJSON);
+    
     const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
+    console.log('👤 Usuario parseado:', usuario);
+    
     setUsuario(usuario);
     if (usuario) {
       setFormData({
@@ -28,12 +34,50 @@ export default function Profile() {
         correoOriginal: usuario.correo
       });
       const nivel = usuario.nivel;
-      if (nivel != null) {
+      console.log('📊 Nivel del usuario:', nivel);
+      
+      if (nivel != null && nivel !== 'null') {
         setLevel(nivel);
       } else {
         setLevel('Necesitas prueba de nivel');
       }
     }
+  };
+  
+  // Cargar datos al montar el componente
+  useEffect(() => {
+    cargarDatosUsuario();
+  }, []);
+
+  // Escuchar cambios en el localStorage (cuando se actualiza desde otro tab o componente)
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      console.log('🔔 Storage change detectado:', e.key);
+      if (e.key === 'usuario') {
+        console.log('✅ Cambio en usuario detectado, recargando datos...');
+        cargarDatosUsuario();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Escuchar el evento focus de la ventana (cuando vuelves al tab)
+  useEffect(() => {
+    const handleFocus = () => {
+      console.log('👀 Ventana enfocada, verificando cambios en usuario...');
+      cargarDatosUsuario();
+    };
+
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

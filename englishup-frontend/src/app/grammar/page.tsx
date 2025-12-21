@@ -10,36 +10,28 @@ export default function Grammar() {
     {
       title: 'Present Simple',
       desc: 'Uso básico para hábitos y hechos generales.',
-      level: 'Beginner',
-      lessons: 12,
-      duration: '2h 30min',
+      level: 'Beginner',      
       icon: 'bi-calendar-check',
       color: 'success'
     },
     {
       title: 'Present Continuous',
       desc: 'Acciones que están ocurriendo ahora mismo.',
-      level: 'Beginner',
-      lessons: 10,
-      duration: '2h 00min',
+      level: 'Beginner',      
       icon: 'bi-arrow-repeat',
       color: 'success'
     },
     {
       title: 'Articles',
       desc: 'Uso de a, an y the en contextos básicos.',
-      level: 'Beginner',
-      lessons: 9,
-      duration: '1h 45min',
+      level: 'Beginner',      
       icon: 'bi-type',
       color: 'success'
     },
     {
       title: 'Past Simple',
       desc: 'Acciones completadas en el pasado.',
-      level: 'Beginner',
-      lessons: 11,
-      duration: '2h 15min',
+      level: 'Beginner',      
       icon: 'bi-clock',
       color: 'success'
     },
@@ -47,45 +39,35 @@ export default function Grammar() {
     {
       title: 'Past Perfect',
       desc: 'Acciones completadas antes de otra en el pasado.',
-      level: 'Intermediate',
-      lessons: 8,
-      duration: '1h 45min',
+      level: 'Intermediate',    
       icon: 'bi-clock-history',
       color: 'primary'
     },
     {
       title: 'Conditionals',
       desc: 'Estructuras para situaciones hipotéticas.',
-      level: 'Intermediate',
-      lessons: 10,
-      duration: '2h 15min',
+      level: 'Intermediate',      
       icon: 'bi-question-circle',
       color: 'primary'
     },
     {
       title: 'Future Tenses',
       desc: 'Will, going to y present continuous para futuro.',
-      level: 'Intermediate',
-      lessons: 14,
-      duration: '3h 00min',
+      level: 'Intermediate',      
       icon: 'bi-fast-forward',
       color: 'primary'
     },
     {
       title: 'Modal Verbs',
       desc: 'Can, could, should, must y sus usos.',
-      level: 'Intermediate',
-      lessons: 11,
-      duration: '2h 10min',
+      level: 'Intermediate',      
       icon: 'bi-sliders',
       color: 'primary'
     },
     {
       title: 'Present Perfect',
       desc: 'Acciones que conectan pasado y presente.',
-      level: 'Intermediate',
-      lessons: 13,
-      duration: '2h 40min',
+      level: 'Intermediate',      
       icon: 'bi-check-circle',
       color: 'primary'
     },
@@ -93,27 +75,21 @@ export default function Grammar() {
     {
       title: 'Passive Voice',
       desc: 'Construcciones pasivas en diferentes tiempos.',
-      level: 'Advanced',
-      lessons: 9,
-      duration: '2h 20min',
+      level: 'Advanced',      
       icon: 'bi-shuffle',
       color: 'danger'
     },
     {
       title: 'Reported Speech',
       desc: 'Cómo reportar lo que otros han dicho.',
-      level: 'Advanced',
-      lessons: 7,
-      duration: '1h 50min',
+      level: 'Advanced',      
       icon: 'bi-chat-quote',
       color: 'danger'
     },
     {
       title: 'Relative Clauses',
       desc: 'Who, which, that y where en oraciones complejas.',
-      level: 'Advanced',
-      lessons: 8,
-      duration: '2h 05min',
+      level: 'Advanced',      
       icon: 'bi-link-45deg',
       color: 'danger'
     },
@@ -224,26 +200,7 @@ export default function Grammar() {
                         <i className={`bi ${topic.icon} fs-3 text-success`}></i>
                       </div>
                       <h5 className="fw-bold mb-2">{topic.title}</h5>
-                      <p className="text-muted small mb-3">{topic.desc}</p>
-
-                      <div className="d-flex justify-content-between text-muted small mb-3">
-                        <span>
-                          <i className="bi bi-file-earmark-text me-1"></i>
-                          {topic.lessons} lecciones
-                        </span>
-                        <span>
-                          <i className="bi bi-clock me-1"></i>
-                          {topic.duration}
-                        </span>
-                      </div>
-
-                      <div className="progress mb-3" style={{ height: '6px' }}>
-                        <div
-                          className="progress-bar bg-success"
-                          style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-                        ></div>
-                      </div>
-
+                      <p className="text-muted small mb-3">{topic.desc}</p>                                            
                       <a onClick={() => router.push(`/grammar/preguntas/${topic.title}`)} className="btn btn-success w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar
@@ -276,26 +233,7 @@ export default function Grammar() {
                         <i className={`bi ${topic.icon} fs-3 text-primary`}></i>
                       </div>
                       <h5 className="fw-bold mb-2">{topic.title}</h5>
-                      <p className="text-muted small mb-3">{topic.desc}</p>
-
-                      <div className="d-flex justify-content-between text-muted small mb-3">
-                        <span>
-                          <i className="bi bi-file-earmark-text me-1"></i>
-                          {topic.lessons} lecciones
-                        </span>
-                        <span>
-                          <i className="bi bi-clock me-1"></i>
-                          {topic.duration}
-                        </span>
-                      </div>
-
-                      <div className="progress mb-3" style={{ height: '6px' }}>
-                        <div
-                          className="progress-bar bg-primary"
-                          style={{ width: `${Math.floor(Math.random() * 100)}%` }}
-                        ></div>
-                      </div>
-
+                      <p className="text-muted small mb-3">{topic.desc}</p>                      
                       <a onClick={() => router.push(`/grammar/preguntas/${topic.title}`)} className="btn btn-primary w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar
@@ -337,25 +275,7 @@ export default function Grammar() {
 
                       <h5 className="fw-bold mb-2">{topic.title}</h5>
                       <p className="text-muted small mb-3">{topic.desc}</p>
-
-                      <div className="d-flex justify-content-between text-muted small mb-3">
-                        <span>
-                          <i className="bi bi-file-earmark-text me-1"></i>
-                          {topic.lessons} lecciones
-                        </span>
-                        <span>
-                          <i className="bi bi-clock me-1"></i>
-                          {topic.duration}
-                        </span>
-                      </div>
-
-                      <div className="progress mb-3" style={{ height: '6px' }}>
-                        <div
-                          className="progress-bar"
-                          style={{ width: `${Math.floor(Math.random() * 100)}%`, background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }}
-                        ></div>
-                      </div>
-
+                     
                       <a onClick={() => router.push(`/grammar/preguntas/${topic.title}`)} className="btn btn-primary w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar
@@ -380,7 +300,7 @@ export default function Grammar() {
                 Realiza nuestro test de nivel gratuito y te recomendaremos las lecciones perfectas para ti. ¡Solo toma 5 minutos!
               </p>
               <div className="d-flex flex-wrap justify-content-center gap-3">
-                <a href="#" className="btn btn-light btn-lg px-5 py-3">
+                <a onClick={() => router.push(`/grammar/preguntas/prueba`)} className="btn btn-light btn-lg px-5 py-3">
                   <i className="bi bi-clipboard-check me-2"></i>
                   Hacer test de nivel
                 </a>
