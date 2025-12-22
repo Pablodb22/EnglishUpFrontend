@@ -1,10 +1,29 @@
 'use client';
 
-
 import { useRouter } from "next/navigation";
 
 export default function Vocabulary() {
   const router = useRouter();
+
+  const reproducirVoz = (texto: string) => {
+    if ('speechSynthesis' in window) {      
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(texto);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      
+      utterance.onstart = () => console.log("✓ Reproduciendo:", texto);
+      utterance.onend = () => console.log("✓ Terminó de reproducir");
+      utterance.onerror = (e) => console.error("Error en síntesis de voz:", e);
+      
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Tu navegador no soporta síntesis de voz");
+    }
+  };
 
   const categories = [
     {
@@ -160,7 +179,6 @@ export default function Vocabulary() {
                 <p className="opacity-75 small mb-0">Aprende una nueva palabra cada día</p>
               </div>
 
-
               {/* Contenido principal */}
               <div className="col-lg-8 bg-white p-5 position-relative">
                 <div className="d-flex flex-wrap justify-content-between align-items-start mb-4">
@@ -173,6 +191,7 @@ export default function Vocabulary() {
                   <button
                     className="btn btn-light border-0 shadow-sm rounded-circle p-3"
                     title="Escuchar"
+                    onClick={() => reproducirVoz('Resilient')}
                   >
                     <i className="bi bi-volume-up text-primary fs-5"></i>
                   </button>
@@ -183,7 +202,7 @@ export default function Vocabulary() {
                 </p>
 
                 <p className="text-muted mb-4 fst-italic">
-                  “She showed <strong>resilient</strong> behavior after the setback, bouncing back stronger than before.”
+                  "She showed <strong>resilient</strong> behavior after the setback, bouncing back stronger than before."
                 </p>
 
                 <div className="d-flex flex-wrap gap-3">
@@ -201,8 +220,6 @@ export default function Vocabulary() {
           </div>
         </div>
       </section>
-
-
 
       {/* Categories */}
       <section id="categories" className="py-5">
@@ -228,7 +245,7 @@ export default function Vocabulary() {
                     <h5 className="fw-bold mb-3">{cat.title}</h5>
                     <p className="text-muted small mb-4">{cat.desc}</p>                   
                     <div className="d-grid gap-2">
-                                            <a onClick={() => router.push(`/vocabulary/palabras/${cat.title}`)} className="btn btn-success w-100">
+                      <a onClick={() => router.push(`/vocabulary/palabras/${cat.title}`)} className="btn btn-success w-100">
                         <i className="bi bi-play-circle-fill me-1"></i>
                         Comenzar a aprender
                       </a>
@@ -257,7 +274,11 @@ export default function Vocabulary() {
                     <h4 className="fw-bold mb-2">{item.word}</h4>
                     <p className="text-muted mb-4">{item.translation}</p>
                     <div className="d-flex gap-2 justify-content-center">
-                      <button className="btn btn-light btn-sm border">
+                      <button 
+                        className="btn btn-light btn-sm border"
+                        onClick={() => reproducirVoz(item.word)}
+                        title="Escuchar pronunciación"
+                      >
                         <i className="bi bi-volume-up text-primary"></i>
                       </button>
                       <button className="btn btn-primary btn-sm flex-grow-1">
@@ -301,7 +322,6 @@ export default function Vocabulary() {
           </div>
         </div>
       </section>
-
 
     </div>
   )
