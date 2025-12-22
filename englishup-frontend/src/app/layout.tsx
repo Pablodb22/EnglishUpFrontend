@@ -22,9 +22,26 @@ export default function RootLayout({
       <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
       </head>
-      <body className={inter.className}>
+      <body 
+        className={inter.className}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          margin: 0,
+          padding: 0,
+        }}
+      >
         <Navbar />
-        <main>{children}</main>
+        <main 
+          style={{
+            flex: '1',
+            paddingTop: '70px', // Espacio para el navbar fixed
+            width: '100%',
+          }}
+        >
+          {children}
+        </main>
         <Footer />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       </body>
