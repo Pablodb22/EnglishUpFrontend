@@ -1,3 +1,4 @@
+// components/Navbar.tsx
 'use client'
 
 import Link from 'next/link'
@@ -14,164 +15,109 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll) 
+    window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
     const storedUser = typeof window !== 'undefined' ? localStorage.getItem('usuario') : null
     setUsuario(storedUser)
-    
-    const handleStorage = () => {
-      setUsuario(localStorage.getItem('usuario'))
-    }
-    
+
+    const handleStorage = () => setUsuario(localStorage.getItem('usuario'))
     window.addEventListener('storage', handleStorage)
     return () => window.removeEventListener('storage', handleStorage)
   }, [])
 
-  // Cerrar menú al hacer click en un link
-  const handleLinkClick = () => {
-    setIsOpen(false)
-  }
+  const handleLinkClick = () => setIsOpen(false)
 
   return (
     <nav
-      className={`navbar navbar-expand-lg fixed-top py-2 py-lg-3 ${isScrolled ? 'shadow-sm' : ''}`}
-      style={{
-        background: isScrolled
-          ? 'rgba(255, 255, 255, 0.97)'
-          : 'rgba(255, 255, 255, 0.85)',
-        backdropFilter: 'blur(16px)',
-        transition: 'all 0.3s ease',
-        borderBottom: isScrolled ? '1px solid rgba(226,232,240,0.6)' : 'none',
-      }}
+      className={`fixed-top w-full py-2 sm:py-3 transition-all ease-in-out duration-300 ${
+        isScrolled ? 'shadow-sm bg-white/95 border-b border-gray-300 backdrop-blur-md' : 'bg-white/85 backdrop-blur-md'
+      }`}
     >
-      <div className="container-fluid px-3 px-lg-4">
-        <div className="d-flex align-items-center justify-content-between w-100">
-          {/* 🔰 LOGO */}
-          <Link 
-            href="/" 
-            className="navbar-brand fw-bold d-flex align-items-center mb-0"
-            onClick={handleLinkClick}
+      <div className="container mx-auto px-4 flex flex-wrap items-center justify-between">
+        {/* LOGO */}
+        <Link
+          href="/"
+          onClick={handleLinkClick}
+          className="flex items-center mb-2 sm:mb-0"
+        >
+          <div
+            className="flex items-center justify-center mr-2 w-10 h-10 rounded-lg shadow-md"
+            style={{ background: gradient }}
           >
-            <div
-              className="d-flex align-items-center justify-content-center me-2"
-              style={{
-                width: '40px',
-                height: '40px',
-                background: gradient,
-                borderRadius: '12px',
-                boxShadow: '0 4px 10px rgba(24,40,72,0.25)',
-              }}
-            >
-              <i className="bi bi-mortarboard-fill text-white" style={{ fontSize: '1.1rem' }}></i>
-            </div>
-            <span
-              className="d-none d-sm-inline"
-              style={{
-                background: gradient,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-                letterSpacing: '0.5px',
-              }}
-            >
-              EnglishUp
-            </span>
-          </Link>
-
-          {/* ☰ TOGGLER */}
-          <button
-            className="navbar-toggler border-0 p-2"
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-label="Toggle navigation"
+            <i className="bi bi-mortarboard-fill text-white text-lg"></i>
+          </div>
+          <span
+            className="hidden sm:inline text-xl font-bold"
             style={{
-              boxShadow: 'none',
-              outline: 'none',
+              background: gradient,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
             }}
           >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+            EnglishUp
+          </span>
+        </Link>
 
-          {/* 🌐 LINKS */}
-          <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}>
-            <ul className="navbar-nav ms-auto align-items-lg-center gap-2 gap-lg-3 mt-3 mt-lg-0">
-              {[
-                { href: '/', icon: 'bi-house-door', label: 'Inicio' },
-                { href: '/grammar', icon: 'bi-book', label: 'Gramática' },
-                { href: '/vocabulary', icon: 'bi-journal-text', label: 'Vocabulario' },              
-                ...(usuario ? [{ href: '/profile', icon: 'bi-person', label: 'Perfil' }] : []),
-              ].map(({ href, icon, label }) => {
-                const isActive = pathname === href
-                return (
-                  <li key={href} className="nav-item">
-                    <Link
-                      href={href}
-                      onClick={handleLinkClick}
-                      className={`nav-link d-flex align-items-center fw-medium position-relative py-2 px-3 px-lg-2 ${
-                        isActive ? 'active-link' : ''
-                      }`}
-                      style={{
-                        color: isActive ? '#4b6cb7' : '#2d3748',
-                        fontWeight: isActive ? '600' : '500',
-                        transition: 'color 0.25s ease',
-                        borderRadius: '8px',
-                        fontSize: 'clamp(0.95rem, 2vw, 1rem)',
-                      }}
-                    >
-                      <i className={`bi ${icon} me-2`} style={{ fontSize: '1.1rem' }}></i>
-                      {label}
-                      {isActive && (
-                        <span
-                          className="position-absolute d-none d-lg-block start-50 translate-middle-x"
-                          style={{
-                            bottom: '-4px',
-                            width: '40%',
-                            height: '2px',
-                            background: gradient,
-                            borderRadius: '2px',
-                          }}
-                        ></span>
-                      )}
-                    </Link>
-                  </li>
-                )
-              })}
+        {/* TOGGLER */}
+        <button
+          className="sm:hidden p-2 border-0"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-              {/* 🔐 LOGIN BUTTON solo si NO hay usuario */}
-              {!usuario && (
-                <li className="nav-item mt-2 mt-lg-0 ms-lg-2">
+        {/* LINKS */}
+        <div
+          className={`w-full sm:w-auto sm:flex sm:items-center ${isOpen ? 'block' : 'hidden'} mt-2 sm:mt-0`}
+        >
+          <ul className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            {[
+              { href: '/', icon: 'bi-house-door', label: 'Inicio' },
+              { href: '/grammar', icon: 'bi-book', label: 'Gramática' },
+              { href: '/vocabulary', icon: 'bi-journal-text', label: 'Vocabulario' },
+              ...(usuario ? [{ href: '/profile', icon: 'bi-person', label: 'Perfil' }] : []),
+            ].map(({ href, icon, label }) => {
+              const isActive = pathname === href
+              return (
+                <li key={href}>
                   <Link
-                    href="/login"
+                    href={href}
                     onClick={handleLinkClick}
-                    className="btn d-flex align-items-center justify-content-center px-4 py-2 rounded-pill w-100"
-                    style={{
-                      background: gradient,
-                      border: 'none',
-                      fontWeight: '600',
-                      color: '#fff',
-                      boxShadow: '0 6px 14px rgba(24,40,72,0.2)',
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                      fontSize: 'clamp(0.9rem, 2vw, 1rem)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)'
-                      e.currentTarget.style.boxShadow = '0 8px 18px rgba(24,40,72,0.25)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)'
-                      e.currentTarget.style.boxShadow = '0 6px 14px rgba(24,40,72,0.2)'
-                    }}
+                    className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+                      isActive ? 'text-blue-700 font-semibold' : 'text-gray-800 font-medium hover:text-blue-600'
+                    }`}
                   >
-                    <i className="bi bi-box-arrow-in-right me-2"></i> Iniciar sesión
+                    <i className={`bi ${icon} mr-2`}></i>
+                    {label}
                   </Link>
                 </li>
-              )}
-            </ul>
-          </div>
+              )
+            })}
+
+            {!usuario && (
+              <li>
+                <Link
+                  href="/login"
+                  onClick={handleLinkClick}
+                  className="flex items-center justify-center px-4 py-2 rounded-full text-white font-semibold transition-all"
+                  style={{ background: gradient }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 8px 18px rgba(24,40,72,0.25)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 6px 14px rgba(24,40,72,0.2)'
+                  }}
+                >
+                  <i className="bi bi-box-arrow-in-right mr-2"></i> Iniciar sesión
+                </Link>
+              </li>
+            )}
+          </ul>
         </div>
       </div>
     </nav>
