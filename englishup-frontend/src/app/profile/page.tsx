@@ -5,27 +5,27 @@ import Popup from "@/components/Popup";
 
 export default function Profile() {
   const [level, setLevel] = useState<string>('');
-  const [formData, setFormData] = useState({nombre: '',correo: '', correoOriginal: ''});
-  const [popup, setPopup] = useState<{type: 'success' | 'error', message: string} | null>(null);
-  const [usuario,setUsuario]=useState<{nombre_completo:string,correo:string,fecha_creacion:string,nivel:string} | null>(null);
+  const [formData, setFormData] = useState({ nombre: '', correo: '', correoOriginal: '' });
+  const [popup, setPopup] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [usuario, setUsuario] = useState<{ nombre_completo: string, correo: string, fecha_creacion: string, nivel: string } | null>(null);
 
-  const formatofecha = usuario?.fecha_creacion 
+  const formatofecha = usuario?.fecha_creacion
     ? new Date(usuario.fecha_creacion).toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',    
-      })
+      year: 'numeric',
+      month: 'long',
+    })
     : '';
-  const inicial=usuario?.nombre_completo.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
-  
+  const inicial = usuario?.nombre_completo.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
+
   // Función para cargar datos del usuario
   const cargarDatosUsuario = () => {
     console.log('🔄 Cargando datos del usuario desde localStorage...');
     const usuarioJSON = localStorage.getItem('usuario');
     console.log('📦 Usuario JSON:', usuarioJSON);
-    
+
     const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
     console.log('👤 Usuario parseado:', usuario);
-    
+
     setUsuario(usuario);
     if (usuario) {
       setFormData({
@@ -35,7 +35,7 @@ export default function Profile() {
       });
       const nivel = usuario.nivel;
       console.log('📊 Nivel del usuario:', nivel);
-      
+
       if (nivel != null && nivel !== 'null') {
         setLevel(nivel);
       } else {
@@ -43,7 +43,7 @@ export default function Profile() {
       }
     }
   };
-  
+
   // Cargar datos al montar el componente
   useEffect(() => {
     cargarDatosUsuario();
@@ -60,7 +60,7 @@ export default function Profile() {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
@@ -74,7 +74,7 @@ export default function Profile() {
     };
 
     window.addEventListener('focus', handleFocus);
-    
+
     return () => {
       window.removeEventListener('focus', handleFocus);
     };
@@ -98,45 +98,45 @@ export default function Profile() {
           nombre_completo: formData.nombre,
           correo: formData.correo
         };
-        
+
         // Actualizar localStorage con los nuevos datos
         localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
-        
+
         // Actualizar el estado del componente
         setUsuario(usuarioActualizado);
-        
+
         // Actualizar correoOriginal para futuras modificaciones
         setFormData({
           ...formData,
           correoOriginal: formData.correo
         });
-        
-        setPopup({type: 'success', message: 'Datos del usuario modificados correctamente.'});                
+
+        setPopup({ type: 'success', message: 'Datos del usuario modificados correctamente.' });
       } else {
-        setPopup({type: 'error', message: 'Error al modificar: ' + respuesta.message});
+        setPopup({ type: 'error', message: 'Error al modificar: ' + respuesta.message });
         console.log(respuesta.message);
       }
     } catch (error) {
       console.error('Error al modificar el perfil: ', error);
-      setPopup({type: 'error', message: 'Error al conectar con el servidor'});
+      setPopup({ type: 'error', message: 'Error al conectar con el servidor' });
     }
   }
 
   return (
     <div className="pt-5">
-  
+
       {/* Profile Header - Hero Style */}
       <section className="hero text-white position-relative animate-in">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
               <div className="d-inline-block position-relative animate-in-left">
-                <div className="bg-white rounded-circle d-flex align-items-center justify-content-center mx-auto" 
-                     style={{ width: '140px', height: '140px', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
+                <div className="bg-white rounded-circle d-flex align-items-center justify-content-center mx-auto"
+                  style={{ width: '140px', height: '140px', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
                   <span className="text-primary fw-bold" style={{ fontSize: '3.5rem' }}>{inicial}</span>
                 </div>
-                <span className="position-absolute bottom-0 end-0 bg-success border border-3 border-white rounded-circle" 
-                      style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="position-absolute bottom-0 end-0 bg-success border border-3 border-white rounded-circle"
+                  style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <i className="bi bi-check-lg text-white fw-bold"></i>
                 </span>
               </div>
@@ -167,7 +167,7 @@ export default function Profile() {
           <div className="row g-4">
             {/* Personal Information */}
             <div className="col-lg-12">
-              <div className="text-center text-lg-start mb-4">                
+              <div className="text-center text-lg-start mb-4">
                 <h2 className="display-6 fw-bold mb-3">Información Personal</h2>
                 <p className="text-center">
                   Mantén tu información actualizada para una mejor experiencia de aprendizaje
@@ -195,7 +195,7 @@ export default function Profile() {
                         <label htmlFor="level" className="form-label">
                           <i className="bi bi-bookmark-star-fill me-2 text-primary"></i>
                           Nivel de Inglés
-                        </label>                        
+                        </label>
                         <input type="text" className="form-control" id="level" value={level} disabled />
                       </div>
                       <div className="col-md-6">
@@ -210,7 +210,18 @@ export default function Profile() {
                       <button type="submit" className="btn btn-primary btn-lg px-5">
                         <i className="bi bi-check-lg me-2"></i>
                         Guardar Cambios
-                      </button>                      
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-lg px-5"
+                        onClick={() => {                          
+                          localStorage.removeItem('usuario');                          
+                          window.location.href = '/';
+                        }}
+                      >
+                        <i className="bi bi-box-arrow-right me-2"></i>
+                        Cerrar Sesión
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -224,7 +235,7 @@ export default function Profile() {
         <Popup
           type={popup.type}
           message={popup.message}
-          onClose={() => {                  
+          onClose={() => {
             setPopup(null);
           }}
         />
