@@ -5,20 +5,13 @@ import { useEffect, useState } from "react"
 import * as paginaService from '../../../../services/pagina';
 
 export default function PalabrasPage() {
-  const [savedWords, setSavedWords] = useState<number[]>([])
   const params = useParams();
   const tema = params.tema;
   const [words, setWords] = useState<Array<{id:number,word:string,meaning_es:string, meaning_en:string, pronunciation:string,respelling_es:string}>>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const toggleSave = (id: number) => {
-    if (savedWords.includes(id)) {
-      setSavedWords(savedWords.filter(wordId => wordId !== id))
-    } else {
-      setSavedWords([...savedWords, id])
-    }
-  }
+
 
   const reproducirVoz = (texto: string) => {
     if ('speechSynthesis' in window) {      
@@ -121,10 +114,6 @@ export default function PalabrasPage() {
                 <i className="bi bi-book-fill me-3"></i>
                 Diccionario de Vocabulario
               </h1>
-              <p className="text-white-50 mb-0">
-                <i className="bi bi-collection me-2"></i>
-                {words.length} palabras disponibles • {savedWords.length} guardadas
-              </p>
             </div>
             <div className="col-md-4 text-md-end mt-3 mt-md-0">
               <a href="/vocabulary" className="btn btn-light px-4">
@@ -174,15 +163,7 @@ export default function PalabrasPage() {
                       >
                         <i className="bi bi-volume-up-fill me-2"></i>
                         Escuchar
-                      </button>
-                      <button 
-                        onClick={() => toggleSave(word.id)}
-                        className={`btn ${savedWords.includes(word.id) ? 'btn-success' : 'btn-outline-success'} flex-grow-1`}
-                        title={savedWords.includes(word.id) ? "Guardada" : "Guardar palabra"}
-                      >
-                        <i className={`bi bi-${savedWords.includes(word.id) ? 'bookmark-check-fill' : 'bookmark'} me-2`}></i>
-                        {savedWords.includes(word.id) ? 'Guardada' : 'Guardar'}
-                      </button>
+                      </button>                      
                     </div>
                   </div>
                 </div>

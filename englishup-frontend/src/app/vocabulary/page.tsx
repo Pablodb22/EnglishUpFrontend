@@ -204,17 +204,7 @@ export default function Vocabulary() {
                 <p className="text-muted mb-4 fst-italic">
                   "She showed <strong>resilient</strong> behavior after the setback, bouncing back stronger than before."
                 </p>
-
-                <div className="d-flex flex-wrap gap-3">
-                  <button className="btn btn-primary rounded-pill px-4">
-                    <i className="bi bi-plus-circle me-2"></i>
-                    Agregar a mi lista
-                  </button>
-                  <button className="btn btn-outline-primary rounded-pill px-4">
-                    <i className="bi bi-share me-2"></i>
-                    Compartir
-                  </button>
-                </div>                
+               
               </div>
             </div>
           </div>
@@ -235,7 +225,7 @@ export default function Vocabulary() {
             {categories.map((cat, index) => (
               <div key={index} className="col-lg-4 col-md-6">
                 <div className="card h-100 border-0">
-                  <div className="card-body p-4 text-center">
+                <div className="card-body p-4 text-center">
                     <div
                       className="d-inline-flex align-items-center justify-content-center text-white rounded-circle mb-4"
                       style={{ width: '100px', height: '100px', background: cat.gradient }}
@@ -281,44 +271,12 @@ export default function Vocabulary() {
                       >
                         <i className="bi bi-volume-up text-primary"></i>
                       </button>
-                      <button className="btn btn-primary btn-sm flex-grow-1">
-                        <i className="bi bi-plus-lg me-1"></i>
-                        Agregar
-                      </button>
+                    
                     </div>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="bg-gradient-success text-white py-5">
-        <div className="container text-center py-4">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <i className="bi bi-gift-fill fs-1 mb-3 d-block"></i>
-              <h2 className="display-5 fw-bold mb-4">Crea tu lista personalizada</h2>
-              <p className="lead mb-4 opacity-75">
-                Guarda tus palabras favoritas, practica con flashcards inteligentes y haz seguimiento de tu progreso diario.
-              </p>
-              <div className="d-flex flex-wrap justify-content-center gap-3">
-                <a href="#" className="btn btn-light btn-lg px-5 py-3">
-                  <i className="bi bi-plus-circle-fill me-2"></i>
-                  Crear mi lista ahora
-                </a>
-                <a href="#" className="btn btn-outline-light btn-lg px-5 py-3">
-                  <i className="bi bi-download me-2"></i>
-                  Ver listas populares
-                </a>
-              </div>
-              <p className="mt-4 small opacity-50">
-                <i className="bi bi-shield-check me-1"></i>
-                Sincronización automática. Acceso desde cualquier dispositivo.
-              </p>
-            </div>
           </div>
         </div>
       </section>
