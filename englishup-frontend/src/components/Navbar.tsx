@@ -28,7 +28,7 @@ export default function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
-      <div className="container-fluid px-4">
+      <div className="container-fluid">
         {/* LOGO */}
         <Link href="/" className="navbar-brand d-flex align-items-center">
           <i className="bi bi-mortarboard-fill me-2"></i>
@@ -50,28 +50,28 @@ export default function Navbar() {
 
         {/* LINKS */}
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0 w-100">
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             {navLinks.map(({ href, icon, label }) => {
               const isActive = pathname === href
               return (
-                <li key={href} className="nav-item w-100">
+                <li key={href} className="nav-item">
                   <Link
                     href={href}
                     className={`nav-link d-flex align-items-center ${isActive ? 'active' : ''}`}
                   >
-                    <i className={`bi ${icon} me-2`}></i> {label}
+                    <i className={`bi ${icon} me-1`}></i> {label}
                   </Link>
                 </li>
               )
             })}
 
             {!usuario && (
-              <li className="nav-item w-100 mt-2 mt-lg-0">
+              <li className="nav-item">
                 <Link
                   href="/login"
-                  className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
+                  className="btn btn-primary ms-lg-2 d-flex align-items-center"
                 >
-                  <i className="bi bi-box-arrow-in-right me-2"></i> Iniciar sesión
+                  <i className="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
                 </Link>
               </li>
             )}
