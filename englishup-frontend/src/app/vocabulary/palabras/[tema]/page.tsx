@@ -20,7 +20,27 @@ export default function PalabrasPage() {
     }
   }
 
- useEffect (() => {
+  const reproducirVoz = (texto: string) => {
+    if ('speechSynthesis' in window) {      
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(texto);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      
+      utterance.onstart = () => console.log("✓ Reproduciendo:", texto);
+      utterance.onend = () => console.log("✓ Terminó de reproducir");
+      utterance.onerror = (e) => console.error("Error en síntesis de voz:", e);
+      
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Tu navegador no soporta síntesis de voz");
+    }
+  };
+
+  useEffect (() => {
     async function fetchQuestions() {
       try {
         setIsLoading(true)
@@ -61,6 +81,7 @@ export default function PalabrasPage() {
       </div>
     );
   }
+  
   if (error) {
     return (
       <div className="pt-5 min-vh-100 d-flex align-items-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
@@ -83,6 +104,7 @@ export default function PalabrasPage() {
       </div>
     );
   }
+  
   return (
     <div 
       style={{ 
@@ -113,6 +135,7 @@ export default function PalabrasPage() {
           </div>
         </div>
       </section>
+      
       {/* Words Grid */}
       <section className="py-5">
         <div className="container">
@@ -131,19 +154,22 @@ export default function PalabrasPage() {
                         <span className="font-monospace">{word.respelling_es}</span>
                       </div>
                     </div>
+                    
                     {/* Spanish Translation */}
                     <div className="mb-4 p-3 bg-light rounded-3">
                       <div className="d-flex align-items-center">
-                          <i className="bi bi-translate text-success fs-4 me-3"></i>
-                          <div className="flex-1 flex flex-col items-start md:items-center pr-8 md:pr-16">
-                            <span className="font-bold text-lg text-blue-700">{word.meaning_es}</span>                            
-                          </div>                         
+                        <i className="bi bi-translate text-success fs-4 me-3"></i>
+                        <div className="flex-1 flex flex-col items-start md:items-center pr-8 md:pr-16">
+                          <span className="font-bold text-lg text-blue-700">{word.meaning_es}</span>                            
+                        </div>                         
                       </div>
                     </div>
+                    
                     {/* Action Buttons */}
                     <div className="d-flex gap-2">
                       <button 
                         className="btn btn-primary flex-grow-1"
+                        onClick={() => reproducirVoz(word.word)}
                         title="Escuchar pronunciación"
                       >
                         <i className="bi bi-volume-up-fill me-2"></i>
