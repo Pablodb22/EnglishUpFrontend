@@ -2,7 +2,7 @@ export async function getQuestions(nivel: string) {
     // Decodificar el parámetro si viene con encoding de URL
     const nivelDecoded = decodeURIComponent(nivel);
     
-    const response = await fetch(`http://localhost:3001/ai/questions?nivel=${encodeURIComponent(nivelDecoded)}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ai/questions?nivel=${encodeURIComponent(nivelDecoded)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ export async function getWords(tema: string) {
     // Decodificar el parámetro si viene con encoding de URL
     const temaDecoded = decodeURIComponent(tema);
 
-    const response = await fetch(`http://localhost:3001/ai/words?tipo=${encodeURIComponent(temaDecoded)}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ai/words?tipo=${encodeURIComponent(temaDecoded)}`, {
         method: 'GET',
         headers: {  
             'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export async function getWords(tema: string) {
 }
 
 export async function postNivel(formData: {nivel: string,correo:string}) {
-    const response=await fetch(`http://localhost:3001/modificar/nivel`, {
+    const response=await fetch(`${process.env.NEXT_PUBLIC_API_URL}/modificar/nivel`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
