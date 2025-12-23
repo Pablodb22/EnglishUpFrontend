@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', margin: 0, padding: 0 }}
       >
         <Navbar />
-        <main style={{ flex: 1, paddingTop: '70px', width: '100%' }}>{children}</main>
+        <main style={{ flex: 1, paddingTop: '10px', width: '100%' }}>{children}</main>
         <Footer />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       </body>

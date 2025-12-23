@@ -221,47 +221,40 @@ h1, h2, h3, h4, .navbar-brand {
 }
 
 /* ============================================
-   🧭 Navbar - Versión Ancha
+   🧭 Navbar
    ============================================ */
 .navbar {
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
-  padding: 1.25rem 0;
+  padding: 1rem 0;
   width: 100%;
   max-width: 100vw;
 }
 
 .navbar .container-fluid {
-  padding-right: 2rem;
-  padding-left: 2rem;
-  max-width: 1600px; /* Ancho máximo aumentado */
-  margin: 0 auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  max-width: 100%;
 }
 
 .navbar-brand {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   background: var(--primary-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-right: 2rem;
-  font-weight: 800;
-}
-
-.navbar-nav {
-  gap: 0.5rem;
+  margin-right: 1rem;
 }
 
 .nav-link {
   font-weight: 500;
   color: var(--text-secondary) !important;
-  padding: 0.875rem 1.5rem !important;
+  padding: 0.75rem 1.25rem !important;
   border-radius: var(--border-radius);
   transition: var(--transition-fast);
   position: relative;
-  font-size: 1.05rem;
 }
 
 .nav-link:hover {
@@ -271,15 +264,7 @@ h1, h2, h3, h4, .navbar-brand {
 
 .nav-link.active {
   color: #4b6cb7 !important;
-  background: rgba(75, 108, 183, 0.15);
-  font-weight: 600;
-}
-
-/* Aumentar el ancho del botón de login */
-.navbar .btn-primary {
-  padding: 0.75rem 2rem;
-  font-size: 1.05rem;
-  margin-left: 0.5rem;
+  background: rgba(75, 108, 183, 0.1);
 }
 
 /* ============================================
@@ -508,30 +493,6 @@ img {
    📱 RESPONSIVE - MOBILE (0-576px)
    ============================================ */
 @media (max-width: 575.98px) {
-  .navbar {
-    padding: 1rem 0;
-  }
-  
-  .navbar .container-fluid {
-    padding-right: 1rem;
-    padding-left: 1rem;
-  }
-  
-  .navbar-brand {
-    font-size: 1.35rem;
-  }
-  
-  .nav-link {
-    padding: 0.75rem 1rem !important;
-    font-size: 1rem;
-  }
-  
-  .navbar .btn-primary {
-    width: 100%;
-    margin-top: 0.5rem;
-    margin-left: 0;
-  }
-  
   .hero { 
     padding: 4rem 0 3rem;
     min-height: auto;
@@ -586,6 +547,10 @@ img {
     padding: 1.25rem;
   }
   
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
   /* Ocultar elementos decorativos en móvil */
   .hero::before,
   .hero::after {
@@ -633,20 +598,6 @@ img {
    💻 RESPONSIVE - TABLET (768-991px)
    ============================================ */
 @media (min-width: 768px) and (max-width: 991.98px) {
-  .navbar .container-fluid {
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    max-width: 100%;
-  }
-  
-  .navbar-brand {
-    font-size: 1.5rem;
-  }
-  
-  .nav-link {
-    padding: 0.75rem 1.25rem !important;
-  }
-  
   .hero { 
     padding: 6rem 0 4rem;
   }
