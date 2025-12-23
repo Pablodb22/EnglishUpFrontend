@@ -89,7 +89,7 @@ export default function Login() {
 
                 <p className="text-center text-white-50 mt-4 mb-0">
                   ¿No tienes cuenta?
-                  <a href="/register" className="text-white fw-semibold ms-1">Regístrate gratis</a>
+                  <a href="/registro" className="text-white fw-semibold ms-1">Regístrate gratis</a>
                 </p>
               </form>
             </div>
